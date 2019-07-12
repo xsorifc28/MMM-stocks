@@ -5,33 +5,33 @@
 Module.register("stocks", {
 
     result: [],
-	// Default module config.
-	defaults: {
-		stocks: 'MSFT,AAPL,GOOG,INTC',
+    // Default module config.
+    defaults: {
+        crypto: 'BTCUSDT,LTCUSDT,ETHUSDT',
+        stocks: 'MSFT,AAPL,GOOG,INTC',
         updateInterval: 60000
-	},
+    },
 
-    getStyles: function() {
-		return ["stocks.css"];
-	},
+    getStyles: function () {
+        return ["stocks.css"];
+    },
 
-    start: function() { 
+    start: function () {
         this.getStocks();
         this.scheduleUpdate();
     },
 
-	// Override dom generator.
-	getDom: function() {
-
+    // Override dom generator.
+    getDom: function () {
         var wrapper = document.createElement("marquee");
-        wrapper.className = 'medium bright';
-
         var count = 0;
         var _this = this;
 
-        if (this.result.length > 0){
-            this.result.forEach(function(stock) {
-                var symbolElement =  document.createElement("span");
+        wrapper.className = 'medium bright';
+
+        if (this.result.length > 0) {
+            this.result.forEach(function (stock) {
+                var symbolElement = document.createElement("span");
                 var symbol = stock.symbol;
                 var lastPrice = stock.latestPrice;
                 var changePercentage = stock.changePercent;
@@ -39,24 +39,24 @@ Module.register("stocks", {
                 var lastClosePrice = stock.close;
                 var lastPriceFix = stock.latestPrice;
 
-                symbolElement.innerHTML = symbol + ' '; 
+                symbolElement.innerHTML = symbol + ' ';
                 wrapper.appendChild(symbolElement);
 
                 var priceElement = document.createElement("span");
-                priceElement.innerHTML = lastPrice;
+                priceElement.innerHTML = `$${_this.formatMoney(lastPrice)}`;
 
                 var changeElement = document.createElement("span");
                 if (changePercentage > 0)
                     changeElement.className = "up";
-                else 
+                else
                     changeElement.className = "down";
 
                 var change = Math.abs(changeValue, -2);
 
                 changeElement.innerHTML = " " + change;
 
-                var divider = document.createElement("span"); 
-                
+                var divider = document.createElement("span");
+
                 if (count < _this.result.length - 1)
                     divider.innerHTML = '  •  ';
 
@@ -69,45 +69,68 @@ Module.register("stocks", {
         }
 
         return wrapper;
-	},
+    },
 
-    scheduleUpdate: function(delay) {
-		var nextLoad = this.config.updateInterval;
-		if (typeof delay !== "undefined" && delay >= 0) {
-			nextLoad = delay;
-		}
+    formatMoney: function (amount, decimalCount = 2, decimal = ".", thousands = ",") {
+        try {
+            decimalCount = Math.abs(decimalCount);
+            decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
 
-		var self = this;
-		setInterval(function() {
-			self.getStocks();
-		}, nextLoad);
-	},
+            const negativeSign = amount < 0 ? "-" : "";
 
-    roundValue: function(value) {
-       return Math.round(value*100)/100; 
+            let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+            let j = (i.length > 3) ? i.length % 3 : 0;
+
+            return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    scheduleUpdate: function (delay) {
+        var nextLoad = this.config.updateInterval;
+        if (typeof delay !== "undefined" && delay >= 0) {
+            nextLoad = delay;
+        }
+
+        var self = this;
+        setInterval(function () {
+            self.getStocks();
+        }, nextLoad);
+    },
+
+    roundValue: function (value) {
+        return Math.round(value * 100) / 100;
     },
 
     getStocks: function () {
-        var url = "https://api.iextrading.com/1.0/stock/" //aapl/quote";
-
         var requestUrls = [];
+        var token = 'YOUR_TOKEN_HERE'
+        var url = "https://cloud.iexapis.com/v1/"
         var stocksArray = this.config.stocks.split(',');
+        var cryptoArray = this.config.crypto.split(',');
 
-        stocksArray.forEach(function(stock) {
-            var requestUrl = url + stock + "/quote";
+
+        cryptoArray.forEach(function (stock) {
+            var requestUrl = url + 'crypto/' + stock + "/quote?token=" + token;
+            requestUrls.push(requestUrl);
+        });
+
+
+        stocksArray.forEach(function (stock) {
+            var requestUrl = url + 'stock/' + stock + "/quote?token=" + token;
             requestUrls.push(requestUrl);
         });
 
         this.sendSocketNotification('GET_STOCKS_MULTI', requestUrls);
-        
     },
 
 
-    socketNotificationReceived: function(notification, payload) {
+    socketNotificationReceived: function (notification, payload) {
         if (notification === "STOCKS_RESULT") {
             this.result = payload;
             this.updateDom(self.config.fadeSpeed);
-        }    
+        }
     },
 
 });
