@@ -43,7 +43,7 @@ Module.register("stocks", {
                 wrapper.appendChild(symbolElement);
 
                 var priceElement = document.createElement("span");
-                priceElement.innerHTML = '$' + _this.formatMoney(lastPrice);
+                priceElement.innerHTML = '$' + _this.formatMoney(lastPrice, 2, '.', ',');
 
                 var changeElement = document.createElement("span");
                 if (changePercentage > 0)
@@ -71,7 +71,7 @@ Module.register("stocks", {
         return wrapper;
     },
 
-    formatMoney: function (amount, decimalCount = 2, decimal = ".", thousands = ",") {
+    formatMoney: function (amount, decimalCount, decimal, thousands) {
         try {
             decimalCount = Math.abs(decimalCount);
             decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
