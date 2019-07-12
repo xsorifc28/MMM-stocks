@@ -2,7 +2,7 @@
 'use strict';
 
 
-Module.register("stocks", {
+Module.register('stocks', {
 
     result: [],
     // Default module config.
@@ -13,7 +13,7 @@ Module.register("stocks", {
     },
 
     getStyles: function () {
-        return ["stocks.css"];
+        return ['stocks.css'];
     },
 
     start: function () {
@@ -23,7 +23,7 @@ Module.register("stocks", {
 
     // Override dom generator.
     getDom: function () {
-        var wrapper = document.createElement("marquee");
+        var wrapper = document.createElement('marquee');
         var count = 0;
         var _this = this;
 
@@ -31,7 +31,7 @@ Module.register("stocks", {
 
         if (this.result.length > 0) {
             this.result.forEach(function (stock) {
-                var symbolElement = document.createElement("span");
+                var symbolElement = document.createElement('span');
                 var symbol = stock.symbol;
                 var lastPrice = stock.latestPrice;
                 var changePercentage = stock.changePercent;
@@ -42,20 +42,20 @@ Module.register("stocks", {
                 symbolElement.innerHTML = symbol + ' ';
                 wrapper.appendChild(symbolElement);
 
-                var priceElement = document.createElement("span");
+                var priceElement = document.createElement('span');
                 priceElement.innerHTML = '$' + _this.formatMoney(lastPrice, 2, '.', ',');
 
-                var changeElement = document.createElement("span");
+                var changeElement = document.createElement('span');
                 if (changePercentage > 0)
-                    changeElement.className = "up";
+                    changeElement.className = 'up';
                 else
-                    changeElement.className = "down";
+                    changeElement.className = 'down';
 
                 var change = Math.abs(changeValue, -2);
 
-                changeElement.innerHTML = " " + change;
+                changeElement.innerHTML = ' ' + change;
 
-                var divider = document.createElement("span");
+                var divider = document.createElement('span');
 
                 if (count < _this.result.length - 1)
                     divider.innerHTML = '  •  ';
@@ -76,12 +76,12 @@ Module.register("stocks", {
             decimalCount = Math.abs(decimalCount);
             decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
 
-            const negativeSign = amount < 0 ? "-" : "";
+            var negativeSign = amount < 0 ? '-' : '';
 
-            let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-            let j = (i.length > 3) ? i.length % 3 : 0;
+            var i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+            var j = (i.length > 3) ? i.length % 3 : 0;
 
-            return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+            return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : '');
         } catch (e) {
             console.log(e)
         }
@@ -89,7 +89,7 @@ Module.register("stocks", {
 
     scheduleUpdate: function (delay) {
         var nextLoad = this.config.updateInterval;
-        if (typeof delay !== "undefined" && delay >= 0) {
+        if (typeof delay !== 'undefined' && delay >= 0) {
             nextLoad = delay;
         }
 
@@ -105,20 +105,20 @@ Module.register("stocks", {
 
     getStocks: function () {
         var requestUrls = [];
-        var token = 'YOUR_TOKEN_HERE'
-        var url = "https://cloud.iexapis.com/v1/"
+        var token = 'YOUR_TOKEN_HERE';
+        var url = 'https://cloud.iexapis.com/v1/'
         var stocksArray = this.config.stocks.split(',');
         var cryptoArray = this.config.crypto.split(',');
 
 
         cryptoArray.forEach(function (stock) {
-            var requestUrl = url + 'crypto/' + stock + "/quote?token=" + token;
+            var requestUrl = url + 'crypto/' + stock + '/quote?token=' + token;
             requestUrls.push(requestUrl);
         });
 
 
         stocksArray.forEach(function (stock) {
-            var requestUrl = url + 'stock/' + stock + "/quote?token=" + token;
+            var requestUrl = url + 'stock/' + stock + '/quote?token=' + token;
             requestUrls.push(requestUrl);
         });
 
@@ -127,7 +127,7 @@ Module.register("stocks", {
 
 
     socketNotificationReceived: function (notification, payload) {
-        if (notification === "STOCKS_RESULT") {
+        if (notification === 'STOCKS_RESULT') {
             this.result = payload;
             this.updateDom(self.config.fadeSpeed);
         }
