@@ -43,7 +43,7 @@ Module.register("stocks", {
                 wrapper.appendChild(symbolElement);
 
                 var priceElement = document.createElement("span");
-                priceElement.innerHTML = `$${_this.formatMoney(lastPrice)}`;
+                priceElement.innerHTML = '$' + _this.formatMoney(lastPrice);
 
                 var changeElement = document.createElement("span");
                 if (changePercentage > 0)
