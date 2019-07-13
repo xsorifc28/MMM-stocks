@@ -120,7 +120,7 @@ Module.register('stocks', {
 
 
         stocksArray.forEach(function (stock) {
-            var requestUrl = url + 'stock/' + stock + '/quote?token=' + token;
+            var requestUrl = url + 'stock/' + stock + '/quote?token=' + apiKey;
             requestUrls.push(requestUrl);
         });
 
