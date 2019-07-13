@@ -7,6 +7,7 @@ Module.register('stocks', {
     result: [],
     // Default module config.
     defaults: {
+        apiKey: 'YOUR_KEY_HERE',
         crypto: 'BTCUSDT,LTCUSDT,ETHUSDT',
         stocks: 'MSFT,AAPL,GOOG,INTC',
         updateInterval: 60000
@@ -105,14 +106,15 @@ Module.register('stocks', {
 
     getStocks: function () {
         var requestUrls = [];
-        var token = 'YOUR_TOKEN_HERE';
+        var apiKey =  this.config.apiKey;
         var url = 'https://cloud.iexapis.com/v1/'
         var stocksArray = this.config.stocks.split(',');
         var cryptoArray = this.config.crypto.split(',');
 
+        console.log(requestUrls);
 
         cryptoArray.forEach(function (stock) {
-            var requestUrl = url + 'crypto/' + stock + '/quote?token=' + token;
+            var requestUrl = url + 'crypto/' + stock + '/quote?token=' + apiKey;
             requestUrls.push(requestUrl);
         });
 
