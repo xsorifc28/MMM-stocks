@@ -33,24 +33,28 @@ Module.register('stocks', {
         if (this.result.length > 0) {
             this.result.forEach(function (stock) {
                 var symbolElement = document.createElement('span');
+                var priceElement = document.createElement('span');
+                var changeElement = document.createElement('span');
                 var symbol = stock.symbol;
                 var lastPrice = stock.latestPrice;
                 var changePercentage = stock.changePercent;
                 var changeValue = stock.change;
-                var lastClosePrice = stock.close;
-                var lastPriceFix = stock.latestPrice;
 
+
+                symbolElement.className = "stock__stock--symbol";
+                priceElement.className = "stock__stock--price";
+                changeElement.className = "stock__stock--change";
                 symbolElement.innerHTML = symbol + ' ';
                 wrapper.appendChild(symbolElement);
 
-                var priceElement = document.createElement('span');
+
                 priceElement.innerHTML = '$' + _this.formatMoney(lastPrice, 2, '.', ',');
 
-                var changeElement = document.createElement('span');
+
                 if (changePercentage > 0)
-                    changeElement.className = 'up';
+                    changeElement.classList += ' up';
                 else
-                    changeElement.className = 'down';
+                    changeElement.classList += ' down';
 
                 var change = Math.abs(changeValue, -2);
 
