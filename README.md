@@ -12,7 +12,9 @@ modules: [
     module: 'stocks',
         position: 'bottom_bar',
     config: {
+      apiKey: 'YOUR_KEY_GOES_HERE', // api token from https://cloud.iexapis.com
       crypto: 'BTCUSDT,LTCUSDT,ETHUSDT', // crypto symbols
+      separator: '&nbsp;&nbsp;•&nbsp;&nbsp;', // separator between stocks
       stocks: 'MSFT,AAPL,GOOG,INTC', // stock symbols
       updateInterval: 37000 // update interval in milliseconds
     }
