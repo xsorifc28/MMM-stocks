@@ -9,7 +9,9 @@ var request = require('request');
 
 module.exports = NodeHelper.create({
 
-    start: function () {},
+    start: function () {
+        console.log('MMM-stocks: started'); /*eslint-disable-line*/
+    },
 
     getStocks: function (url) {
         var self = this;
@@ -42,7 +44,8 @@ module.exports = NodeHelper.create({
                     }
 
                 } else {
-                    throw new Error(error);
+                    var err = error;
+                    throw new Error(err);
                 }
             });
         });

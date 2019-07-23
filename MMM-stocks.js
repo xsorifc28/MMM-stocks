@@ -6,7 +6,7 @@
  */
 'use strict';
 
-Module.register('mmm-stocks', { /*eslint-disable-line*/
+Module.register('MMM-stocks', { /*eslint-disable-line*/
     result: [],
     // Default module config.
     defaults: {
