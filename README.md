@@ -46,6 +46,7 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 **Elan Trybuch**
 * [github](https://www.github.com/elaniobro)
 * [twitter](https://www.twitte.com/elaniobro)
+
 **[Alex Yakhnin]**
 * [github](https://github.com/alexyak)
 
