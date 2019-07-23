@@ -1,6 +1,4 @@
-.marquee
-{
-  
+.marquee {
     width: 100%;
     margin: 0 auto;
     overflow: hidden;
@@ -10,12 +8,23 @@
     -webkit-animation: marquee 50s linear infinite;
 }
 
-.down 
-{
+.down {
     color: red;
 }
 
-.up 
-{
+.down::before {
+    content: '▾';
+}
+
+.up {
     color: green;
+}
+
+.up::before {
+    content: '▴';
+}
+
+.down::before,
+.up::before {
+    margin-left: 15px;
 }
