@@ -1,6 +1,12 @@
+/* Magic Mirror
+ * Module: stocks
+ *
+ * By Alex Yakhnin https://github.com/alexyak & Elan Trybuch https://github.com/elaniobro
+ * MIT Licensed.
+ */
 'use strict';
 
-Module.register('stocks', {
+Module.register('stocks', { /*eslint-disable-line*/
     result: [],
     // Default module config.
     defaults: {
@@ -40,9 +46,9 @@ Module.register('stocks', {
                 var changeValue = stock.change;
 
 
-                symbolElement.className = "stock__stock--symbol";
-                priceElement.className = "stock__stock--price";
-                changeElement.className = "stock__stock--change";
+                symbolElement.className = 'stock__stock--symbol';
+                priceElement.className = 'stock__stock--price';
+                changeElement.className = 'stock__stock--change';
                 symbolElement.innerHTML = symbol + ' ';
                 wrapper.appendChild(symbolElement);
 
@@ -50,10 +56,11 @@ Module.register('stocks', {
                 priceElement.innerHTML = '$' + _this.formatMoney(lastPrice, 2, '.', ',');
 
 
-                if (changePercentage > 0)
+                if (changePercentage > 0) {
                     changeElement.classList += ' up';
-                else
+                } else {
                     changeElement.classList += ' down';
+                }
 
                 var change = Math.abs(changeValue, -2);
 
@@ -61,8 +68,9 @@ Module.register('stocks', {
 
                 var divider = document.createElement('span');
 
-                if (count < _this.result.length - 1)
+                if (count < _this.result.length - 1){
                     divider.innerHTML = separator;
+                }
 
                 wrapper.appendChild(priceElement);
                 wrapper.appendChild(changeElement);
@@ -87,7 +95,7 @@ Module.register('stocks', {
 
             return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : '');
         } catch (e) {
-            console.log(e)
+            throw new Error(e);
         }
     },
 
@@ -110,11 +118,9 @@ Module.register('stocks', {
     getStocks: function () {
         var requestUrls = [];
         var apiKey =  this.config.apiKey;
-        var url = 'https://cloud.iexapis.com/v1/'
+        var url = 'https://cloud.iexapis.com/v1/';
         var stocksArray = this.config.stocks.split(',');
         var cryptoArray = this.config.crypto.split(',');
-
-        console.log(requestUrls);
 
         cryptoArray.forEach(function (stock) {
             var requestUrl = url + 'crypto/' + stock + '/quote?token=' + apiKey;
