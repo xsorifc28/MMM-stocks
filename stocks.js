@@ -1,14 +1,12 @@
-
 'use strict';
 
-
 Module.register('stocks', {
-
     result: [],
     // Default module config.
     defaults: {
         apiKey: 'YOUR_KEY_HERE',
         crypto: 'BTCUSDT,LTCUSDT,ETHUSDT',
+        separator: '&nbsp;&nbsp;•&nbsp;&nbsp;',
         stocks: 'MSFT,AAPL,GOOG,INTC',
         updateInterval: 60000
     },
@@ -27,6 +25,7 @@ Module.register('stocks', {
         var wrapper = document.createElement('marquee');
         var count = 0;
         var _this = this;
+        var separator = this.config.separator;
 
         wrapper.className = 'medium bright';
 
@@ -63,7 +62,7 @@ Module.register('stocks', {
                 var divider = document.createElement('span');
 
                 if (count < _this.result.length - 1)
-                    divider.innerHTML = '  •  ';
+                    divider.innerHTML = separator;
 
                 wrapper.appendChild(priceElement);
                 wrapper.appendChild(changeElement);
